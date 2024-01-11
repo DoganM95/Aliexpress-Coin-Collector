@@ -5,15 +5,18 @@ const username = process.env.ALIEXPRESS_USERNAME;
 const password = process.env.ALIEXPRESS_PASSWORD;
 
 async function login(page) {
-    await page.goto("https://login.aliexpress.com"); // Go to login page
-    await page.waitForSelector("#fm-login-id", { visible: true }); // Wait for username input field to be available
-    await page.waitForSelector("#fm-login-password", { visible: true }); // Wait for password input field to be available
-    await page.type("input#fm-login-id", username); // Input username
-    await page.type("input#fm-login-password", password); // Input username
-    await page.click("button.comet-btn"); // Click continue
+    await page.goto("https://login.aliexpress.com", { timeout: 0 }); // Go to login page
+    // await page.waitForSelector("#fm-login-id", { visible: true }); // Wait for username input field to be available
+    // await page.waitForSelector("#fm-login-password", { visible: true }); // Wait for password input field to be available
+    // await page.type("input#fm-login-id", username); // Input username
+    // await page.type("input#fm-login-password", password); // Input username
+    // await page.click("button.comet-btn"); // Click continue
     // await page.screenshot({ path: "username_inserted.jpg" }).catch((e) => console.error(e));
     // await page.type("#password", password); // Input password
-    // await page.waitForNavigation();
+    console.log("Please log in manually. The script will resume once you are logged in.");
+    await page.waitForNavigation();
+    const cookies = await page.cookies(); // Save cookies after login
+    fs.writeFileSync("cookies.json", JSON.stringify(cookies, null, 2));
 }
 
 async function isLoggedIn(page) {
